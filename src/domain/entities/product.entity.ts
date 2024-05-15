@@ -23,4 +23,17 @@ export class ProductEntity {
     this.description = options.description;
     this.images = options.images;
   }
+
+  static fromObject(object: { [key: string]: any }) {
+    const { id, sku, name, price, description, images } = object;
+    const product = new ProductEntity({
+      id,
+      sku,
+      name,
+      price,
+      description,
+      images,
+    });
+    return product;
+  }
 }
