@@ -2,14 +2,14 @@ import { ProductEntity } from '../entities/product.entity';
 import {
   FilterProduct,
   Pagination,
-  ProductsResultPagination,
+  ProductsResult,
 } from '../repositories/product.repository';
 
 export abstract class ProductDatasource {
   abstract getProducts(
     filter: FilterProduct,
     pagination: Pagination,
-  ): Promise<ProductsResultPagination>;
+  ): Promise<ProductsResult>;
   abstract getProductById(id: string): Promise<ProductEntity>;
   abstract createProduct(product: ProductEntity): Promise<ProductEntity>;
   abstract updateProduct(

@@ -12,7 +12,7 @@ export interface FilterProduct {
   minPrice?: number;
 }
 
-export interface ProductsResultPagination {
+export interface ProductsResult {
   total: number;
   products: ProductEntity[];
 }
@@ -21,7 +21,7 @@ export abstract class ProductRepository {
   abstract getProducts(
     filter: FilterProduct,
     pagination: Pagination,
-  ): Promise<ProductsResultPagination>;
+  ): Promise<ProductsResult>;
   abstract getProductById(id: string): Promise<ProductEntity>;
   abstract createProduct(product: ProductEntity): Promise<ProductEntity>;
   abstract updateProduct(

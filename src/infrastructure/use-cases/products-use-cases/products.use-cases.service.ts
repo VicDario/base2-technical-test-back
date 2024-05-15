@@ -5,13 +5,14 @@ import { ProductEntity } from '@/entities/product.entity';
 import {
   FilterProduct,
   Pagination,
-} from '@/domain/datasources/product.datasource';
+  ProductsResult,
+} from '@/domain/repositories/product.repository';
 
 @Injectable()
 export class ProductsUseCasesService {
   constructor(private productRepository: ProductRepositoryService) {}
 
-  async getProducts(filter: FilterProductsDto): Promise<ProductEntity[]> {
+  async getProducts(filter: FilterProductsDto): Promise<ProductsResult> {
     const pagination: Pagination = {
       offset: filter.offset,
       limit: filter.limit,
