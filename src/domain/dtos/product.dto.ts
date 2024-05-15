@@ -36,7 +36,6 @@ export class CreateProductDto {
   @IsString({
     each: true,
   })
-  @IsUrl()
   @ApiProperty({ description: 'The product images URLs' })
   readonly images?: string[];
 }
