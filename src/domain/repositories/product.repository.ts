@@ -1,11 +1,27 @@
 import { ProductEntity } from '../entities/product.entity';
-import { FilterProduct, Pagination } from '../datasources/product.datasource';
+
+export interface Pagination {
+  offset: number;
+  limit: number;
+}
+
+export interface FilterProduct {
+  name?: string;
+  sku?: string;
+  maxPrice?: number;
+  minPrice?: number;
+}
+
+export interface ProductsResultPagination {
+  total: number;
+  products: ProductEntity[];
+}
 
 export abstract class ProductRepository {
   abstract getProducts(
     filter: FilterProduct,
     pagination: Pagination,
-  ): Promise<ProductEntity[]>;
+  ): Promise<ProductsResultPagination>;
   abstract getProductById(id: string): Promise<ProductEntity>;
   abstract createProduct(product: ProductEntity): Promise<ProductEntity>;
   abstract updateProduct(
