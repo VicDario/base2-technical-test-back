@@ -20,6 +20,8 @@
     "paths": {
       "@/repositories/*": ["src/infrastructure/repositories/*"],
       "@/use-cases/*": ["src/infrastructure/use-cases/*"],
+      "@/entities/*": ["src/domain/entities/*"],
+      "@/dtos/*": ["src/domain/dtos/*"],
       "@/*": ["src/*"],
     }
   }
