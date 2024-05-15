@@ -1,10 +1,10 @@
 interface CategoryEntityOptions {
-  id: number;
+  id: string;
   name: string;
 }
 
 export class CategoryEntity {
-  id: number;
+  id: string;
   name: string;
 
   constructor(options: CategoryEntityOptions) {
