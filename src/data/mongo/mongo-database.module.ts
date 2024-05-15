@@ -17,9 +17,8 @@ import { Product, ProductSchema } from './models/product.model';
         };
       },
     }),
-  ],
-  exports: [
     MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
   ],
+  exports: [MongooseModule],
 })
 export class MongoDatabaseModule {}
