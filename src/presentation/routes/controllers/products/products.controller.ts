@@ -10,7 +10,6 @@ export class ProductsController {
   @Get()
   @ApiOperation({ summary: 'Get a list of products' })
   getProducts(@Query() filter: FilterProductsDto) {
-    console.log(filter);
     return this.productService.getProducts(filter);
   }
 
