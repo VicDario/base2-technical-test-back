@@ -8,7 +8,7 @@ export class Product {
   @Prop()
   name: string;
 
-  @Prop()
+  @Prop({ unique: true })
   sku: string;
 
   @Prop()
@@ -17,7 +17,7 @@ export class Product {
   @Prop()
   description: string;
 
-  @Prop()
+  @Prop([String])
   images: string[];
 }
 
