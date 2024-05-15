@@ -2,11 +2,11 @@ import {
   IsString,
   IsNotEmpty,
   IsNumber,
-  IsUrl,
   IsPositive,
   IsOptional,
   Min,
   ValidateIf,
+  IsMongoId,
 } from 'class-validator';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
 
@@ -31,6 +31,12 @@ export class CreateProductDto {
   @IsNotEmpty()
   @ApiProperty()
   readonly description: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsMongoId()
+  @ApiProperty({ description: 'The mongo id of the category' })
+  readonly category: string;
 
   @IsOptional()
   @IsString({
