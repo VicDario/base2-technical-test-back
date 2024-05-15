@@ -18,7 +18,8 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@/*": ["src/*"]
+      "@/repositories/*": ["src/infrastructure/repositories/*"],
+      "@/*": ["src/*"],
     }
   }
 }
