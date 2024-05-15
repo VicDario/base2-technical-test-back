@@ -5,7 +5,7 @@ export interface Pagination {
   limit: number;
 }
 
-export interface FilterProducts {
+export interface FilterProduct {
   name?: string;
   sku?: string;
   maxPrice?: number;
@@ -14,7 +14,7 @@ export interface FilterProducts {
 
 export abstract class ProductDatasource {
   abstract getProducts(
-    filter: FilterProducts,
+    filter: FilterProduct,
     pagination: Pagination,
   ): Promise<ProductEntity[]>;
   abstract getProductById(id: string): Promise<ProductEntity>;

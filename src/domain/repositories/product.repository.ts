@@ -1,9 +1,9 @@
 import { ProductEntity } from '../entities/product.entity';
-import { FilterProducts, Pagination } from '../datasources/product.datasource';
+import { FilterProduct, Pagination } from '../datasources/product.datasource';
 
 export abstract class ProductRepository {
   abstract getProducts(
-    filter: FilterProducts,
+    filter: FilterProduct,
     pagination: Pagination,
   ): Promise<ProductEntity[]>;
   abstract getProductById(id: string): Promise<ProductEntity>;
