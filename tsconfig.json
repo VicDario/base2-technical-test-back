@@ -19,6 +19,7 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@/repositories/*": ["src/infrastructure/repositories/*"],
+      "@/use-cases/*": ["src/infrastructure/use-cases/*"],
       "@/*": ["src/*"],
     }
   }
