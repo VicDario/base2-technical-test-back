@@ -9,4 +9,4 @@ export const envs = registerAs('config', () => ({
 export const validateConfig = Joi.object({
   MONGO_URI: Joi.string().required(),
   PORT: Joi.number().required(),
-})
+});
