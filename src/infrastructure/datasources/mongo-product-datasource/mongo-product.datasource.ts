@@ -55,6 +55,7 @@ export class MongoProductDatasource implements ProductDatasource {
     } catch (error) {
       if (error.code === 11000)
         throw new SkuConflictException(product.sku);
+      else throw error;
     }
   }
 
@@ -70,6 +71,7 @@ export class MongoProductDatasource implements ProductDatasource {
     } catch (error) {
       if (error.code === 11000)
         throw new SkuConflictException(product.sku);
+      else throw error;
     }
   }
 
