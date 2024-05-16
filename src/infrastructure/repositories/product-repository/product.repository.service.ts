@@ -25,7 +25,7 @@ export class ProductRepositoryService implements ProductRepository {
     throw new Error('Method not implemented.');
   }
   async createProduct(product: ProductEntity): Promise<ProductEntity> {
-    return this.createProduct(product);
+    return await this.productDatasource.createProduct(product);
   }
   updateProduct(id: string, product: ProductEntity): Promise<ProductEntity> {
     throw new Error('Method not implemented.');
