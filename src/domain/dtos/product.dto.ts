@@ -49,16 +49,6 @@ export class CreateProductDto {
 export class UpdateProductDto extends PartialType(CreateProductDto) {}
 
 export class FilterProductsDto {
-  @IsNumber()
-  @IsPositive()
-  @ApiProperty({ required: true, description: 'The limit for pagination' })
-  limit: number;
-
-  @IsNumber()
-  @Min(0)
-  @ApiProperty({ required: true, description: 'The offset for pagination' })
-  offset: number;
-
   @IsOptional()
   @IsNumber()
   @Min(0)
