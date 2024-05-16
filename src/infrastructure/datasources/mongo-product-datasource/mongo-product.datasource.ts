@@ -71,7 +71,8 @@ export class MongoProductDatasource implements ProductDatasource {
   ): Promise<ProductEntity> {
     try {
       const updatedProduct = await this.productModel
-        .findOneAndUpdate({ id }, product, { new: true })
+        .findByIdAndUpdate(id, product, { new: true })
+        .populate('category')
         .exec();
       return ProductEntity.fromObject(updatedProduct);
     } catch (error) {
