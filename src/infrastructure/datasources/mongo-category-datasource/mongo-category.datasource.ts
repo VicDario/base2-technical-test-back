@@ -14,22 +14,47 @@ export class MongoCategoryDatasource implements CategoryDatasource {
   constructor(
     @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
   ) {}
-  getCategories(pagination: Pagination): Promise<CategoriesResult> {
-    throw new Error('Method not implemented.');
+
+  async getCategories(pagination: Pagination): Promise<CategoriesResult> {
+    const query = this.categoryModel.find();
+    const totalCategories = query.clone().estimatedDocumentCount().exec();
+    const categoriesResult = await query
+      .limit(pagination.limit)
+      .skip(pagination.offset)
+      .exec();
+
+    const categories = categoriesResult.map(CategoryEntity.fromObject);
+    return {
+      categories: categories,
+      total: await totalCategories,
+    };
   }
-  getCategoryById(id: string): Promise<CategoryEntity> {
-    throw new Error('Method not implemented.');
+
+  async getCategoryById(id: string): Promise<CategoryEntity> {
+    const category = await this.categoryModel.findById(id).exec();
+    if (!category) return;
+    return CategoryEntity.fromObject(category.toObject());
   }
-  createCategory(category: CategoryEntity): Promise<CategoryEntity> {
-    throw new Error('Method not implemented.');
+
+  async createCategory(category: CategoryEntity): Promise<CategoryEntity> {
+    const newCategory = await this.categoryModel.create(category);
+    return CategoryEntity.fromObject(newCategory.toObject());
   }
-  updateCategory(
+
+  async updateCategory(
     id: string,
     category: CategoryEntity,
   ): Promise<CategoryEntity> {
-    throw new Error('Method not implemented.');
+    const updatedCategory = await this.categoryModel.findOneAndUpdate(
+      { _id: id },
+      category,
+      { new: true },
+    );
+    return CategoryEntity.fromObject(updatedCategory.toObject());
   }
-  deleteCategory(id: string): Promise<CategoryEntity> {
-    throw new Error('Method not implemented.');
+
+  async deleteCategory(id: string): Promise<CategoryEntity> {
+    const deletedCategory = await this.categoryModel.findByIdAndDelete(id);
+    return CategoryEntity.fromObject(deletedCategory.toObject());
   }
 }
