@@ -12,8 +12,16 @@ export class CategoriesUseCasesService {
     return await this.categoryRepository.getCategories(pagination);
   }
 
+  async getCategoryById(id: string) {
+    return await this.categoryRepository.getCategoryById(id);
+  }
+
   async createCategory(category: CreateCategoryDto) {
     const newCategory = new CategoryEntity(category);
     return await this.categoryRepository.createCategory(newCategory);
+  }
+
+  async deleteCategory(id: string) {
+    return await this.categoryRepository.deleteCategory(id);
   }
 }
