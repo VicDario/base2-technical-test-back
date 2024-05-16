@@ -1,7 +1,7 @@
 import { CategoryEntity } from './category.entity';
 
 export interface ProductEntityOptions {
-  id: string;
+  id?: string;
   sku: string;
   name: string;
   price: number;
@@ -11,7 +11,7 @@ export interface ProductEntityOptions {
 }
 
 export class ProductEntity {
-  public id: string;
+  public id?: string;
   public sku: string;
   public name: string;
   public price: number;
