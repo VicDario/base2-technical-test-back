@@ -21,6 +21,11 @@ export class CreateProductDto {
   @ApiProperty()
   readonly name: string;
 
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({ description: 'The brand that product belongs' })
+  readonly brand: string;
+  
   @IsNumber()
   @IsNotEmpty()
   @IsPositive()
