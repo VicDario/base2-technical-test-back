@@ -33,12 +33,12 @@ export class MongoCategoryDatasource implements CategoryDatasource {
   async getCategoryById(id: string): Promise<CategoryEntity> {
     const category = await this.categoryModel.findById(id).exec();
     if (!category) return;
-    return CategoryEntity.fromObject(category.toObject());
+    return CategoryEntity.fromObject(category);
   }
 
   async createCategory(category: CategoryEntity): Promise<CategoryEntity> {
     const newCategory = await this.categoryModel.create(category);
-    return CategoryEntity.fromObject(newCategory.toObject());
+    return CategoryEntity.fromObject(newCategory);
   }
 
   async updateCategory(
@@ -50,11 +50,11 @@ export class MongoCategoryDatasource implements CategoryDatasource {
       category,
       { new: true },
     );
-    return CategoryEntity.fromObject(updatedCategory.toObject());
+    return CategoryEntity.fromObject(updatedCategory);
   }
 
   async deleteCategory(id: string): Promise<CategoryEntity> {
     const deletedCategory = await this.categoryModel.findByIdAndDelete(id);
-    return CategoryEntity.fromObject(deletedCategory.toObject());
+    return CategoryEntity.fromObject(deletedCategory);
   }
 }
