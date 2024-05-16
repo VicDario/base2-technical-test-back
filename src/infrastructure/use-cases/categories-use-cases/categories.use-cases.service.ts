@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CategoryRepositoryService } from '@/repositories/category-repository/category.repository.service';
 import { Pagination } from '@/domain/repositories/category.repository';
 import { CreateCategoryDto } from '@/dtos/category.dto';
@@ -13,7 +13,9 @@ export class CategoriesUseCasesService {
   }
 
   async getCategoryById(id: string) {
-    return await this.categoryRepository.getCategoryById(id);
+    const category = await this.categoryRepository.getCategoryById(id);
+    if (!category) throw new NotFoundException();
+    return category
   }
 
   async createCategory(category: CreateCategoryDto) {
@@ -22,6 +24,8 @@ export class CategoriesUseCasesService {
   }
 
   async deleteCategory(id: string) {
-    return await this.categoryRepository.deleteCategory(id);
+    const deletedCategory = await this.categoryRepository.deleteCategory(id);
+    if (!deletedCategory) throw new NotFoundException();
+    return deletedCategory;
   }
 }
