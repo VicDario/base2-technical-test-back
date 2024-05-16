@@ -22,15 +22,18 @@ export class ProductRepositoryService implements ProductRepository {
   }
 
   async getProductById(id: string): Promise<ProductEntity> {
-    throw new Error('Method not implemented.');
+    return await this.productDatasource.getProductById(id);
   }
+  
   async createProduct(product: ProductEntity): Promise<ProductEntity> {
     return await this.productDatasource.createProduct(product);
   }
-  updateProduct(id: string, product: ProductEntity): Promise<ProductEntity> {
-    throw new Error('Method not implemented.');
+
+  async updateProduct(id: string, product: ProductEntity): Promise<ProductEntity> {
+    return await this.productDatasource.updateProduct(id, product);
   }
-  deleteProduct(id: string): Promise<ProductEntity> {
-    throw new Error('Method not implemented.');
+
+  async deleteProduct(id: string): Promise<ProductEntity> {
+    return await this.productDatasource.deleteProduct(id);
   }
 }
