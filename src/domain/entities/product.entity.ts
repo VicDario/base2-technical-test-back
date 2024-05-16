@@ -47,4 +47,16 @@ export class ProductEntity {
     });
     return product;
   }
+
+  static fromPartial(partial: { [key: string]: any }): ProductEntity {
+    const product = new ProductEntity({
+      sku: partial.sku,
+      name: partial.name,
+      price: partial.price,
+      description: partial.description,
+      category: partial.category,
+      images: partial.images,
+    });
+    return product;
+  }
 }
