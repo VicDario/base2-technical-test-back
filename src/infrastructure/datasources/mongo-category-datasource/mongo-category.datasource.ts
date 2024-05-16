@@ -32,7 +32,7 @@ export class MongoCategoryDatasource implements CategoryDatasource {
 
   async getCategoryById(id: string): Promise<CategoryEntity> {
     const category = await this.categoryModel.findById(id).exec();
-    if (!category) return;
+    if (!category) return null;
     return CategoryEntity.fromObject(category);
   }
 
@@ -45,16 +45,18 @@ export class MongoCategoryDatasource implements CategoryDatasource {
     id: string,
     category: CategoryEntity,
   ): Promise<CategoryEntity> {
-    const updatedCategory = await this.categoryModel.findOneAndUpdate(
-      { _id: id },
+    const updatedCategory = await this.categoryModel.findByIdAndUpdate(
+      id,
       category,
       { new: true },
     );
+    if (!updatedCategory) return null;
     return CategoryEntity.fromObject(updatedCategory);
   }
 
   async deleteCategory(id: string): Promise<CategoryEntity> {
     const deletedCategory = await this.categoryModel.findByIdAndDelete(id);
+    if (!deletedCategory) return null;
     return CategoryEntity.fromObject(deletedCategory);
   }
 }
