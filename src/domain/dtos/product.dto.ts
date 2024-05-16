@@ -27,6 +27,12 @@ export class CreateProductDto {
   @ApiProperty()
   readonly price: number;
 
+  @IsNumber()
+  @IsNotEmpty()
+  @Min(0)
+  @ApiProperty()
+  readonly stock: number;
+
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
