@@ -51,6 +51,7 @@ export class MongoProductDatasource implements ProductDatasource {
   async createProduct(product: ProductEntity): Promise<ProductEntity> {
     try {
       const newProduct = await this.productModel.create(product);
+      await newProduct.populate('category');
       return ProductEntity.fromObject(newProduct);
     } catch (error) {
       if (error.code === 11000)
