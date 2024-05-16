@@ -1,11 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ProductRepository } from '@/domain/repositories/product.repository';
-import { ProductEntity } from '@/domain/entities/product.entity';
 import {
   FilterProduct,
   Pagination,
-  ProductDatasource,
-} from '@/domain/datasources/product.datasource';
+  ProductRepository,
+  ProductsResult,
+} from '@/domain/repositories/product.repository';
+import { ProductEntity } from '@/domain/entities/product.entity';
+import { ProductDatasource } from '@/domain/datasources/product.datasource';
 
 @Injectable()
 export class ProductRepositoryService implements ProductRepository {
@@ -16,7 +17,7 @@ export class ProductRepositoryService implements ProductRepository {
   async getProducts(
     filter: FilterProduct,
     pagination: Pagination,
-  ): Promise<ProductEntity[]> {
+  ): Promise<ProductsResult> {
     return await this.productDatasource.getProducts(filter, pagination);
   }
 
