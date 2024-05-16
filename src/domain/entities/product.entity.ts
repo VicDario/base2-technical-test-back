@@ -5,6 +5,7 @@ export interface ProductEntityOptions {
   sku: string;
   name: string;
   price: number;
+  stock: number;
   description: string;
   category: CategoryEntity | string;
   images?: string[];
@@ -15,29 +16,32 @@ export class ProductEntity {
   public sku: string;
   public name: string;
   public price: number;
+  public stock: number;
   public description: string;
   public category: CategoryEntity | string;
   public images?: string[];
 
   constructor(options: ProductEntityOptions) {
-    const { id, sku, name, price, description, images, category } = options;
+    const { id, sku, name, price, stock, description, images, category } = options;
     this.id = id;
     this.sku = sku;
     this.name = name;
     this.price = price;
+    this.stock = stock;
     this.description = description;
     this.category = category;
     this.images = images;
   }
 
   static fromObject(object: { [key: string]: any }): ProductEntity {
-    const { id, sku, name, price, description, images, category } = object;
+    const { id, sku, name, price, stock, description, images, category } = object;
 
     const product = new ProductEntity({
       id,
       sku,
       name,
       price,
+      stock,
       description,
       images,
       category:
@@ -53,6 +57,7 @@ export class ProductEntity {
       sku: partial.sku,
       name: partial.name,
       price: partial.price,
+      stock: partial.stock,
       description: partial.description,
       category: partial.category,
       images: partial.images,
