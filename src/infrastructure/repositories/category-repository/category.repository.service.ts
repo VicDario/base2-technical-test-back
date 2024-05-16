@@ -26,6 +26,10 @@ export class CategoryRepositoryService implements CategoryRepository {
     return await this.categoryDatasource.createCategory(category);
   }
 
+  async createManyCategories(categories: CategoryEntity[]): Promise<CategoryEntity[]> {
+    return await this.categoryDatasource.createManyCategories(categories);
+  }
+
   async deleteCategory(id: string): Promise<CategoryEntity> {
     return await this.categoryDatasource.deleteCategory(id);
   }
