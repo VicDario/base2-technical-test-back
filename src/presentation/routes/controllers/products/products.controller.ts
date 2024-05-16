@@ -18,6 +18,12 @@ export class ProductsController {
     return this.productService.getProducts(pagination, filter);
   }
 
+  @Get(':id')
+  @ApiOperation({ summary: 'Update product' })
+  getProduct(@Param('id', MongoIdPipe) id: string) {
+    return this.productService.getProductById(id);
+  }
+
   @Post()
   @ApiOperation({ summary: 'Create product' })
   createProduct(@Body() payload: CreateProductDto) {

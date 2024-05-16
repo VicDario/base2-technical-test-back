@@ -16,6 +16,10 @@ export class ProductsUseCasesService {
     return await this.productRepository.getProducts(filter, pagination);
   }
 
+  async getProductById(id: string): Promise<ProductEntity> {
+    return await this.productRepository.getProductById(id);
+  }
+
   async createProduct(product: CreateProductDto) {
     const newProduct = ProductEntity.fromObject(product);
     return this.productRepository.createProduct(newProduct);
