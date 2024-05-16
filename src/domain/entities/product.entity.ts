@@ -6,7 +6,7 @@ export interface ProductEntityOptions {
   name: string;
   price: number;
   description: string;
-  category: CategoryEntity;
+  category: CategoryEntity | string;
   images?: string[];
 }
 
@@ -16,7 +16,7 @@ export class ProductEntity {
   public name: string;
   public price: number;
   public description: string;
-  public category: CategoryEntity;
+  public category: CategoryEntity | string;
   public images?: string[];
 
   constructor(options: ProductEntityOptions) {
@@ -32,7 +32,7 @@ export class ProductEntity {
 
   static fromObject(object: { [key: string]: any }) {
     const { id, sku, name, price, description, images, category } = object;
-    const categoryEntity = CategoryEntity.fromObject(category);
+    
     const product = new ProductEntity({
       id,
       sku,
@@ -40,7 +40,7 @@ export class ProductEntity {
       price,
       description,
       images,
-      category: categoryEntity,
+      category: typeof category === 'string' ? category : CategoryEntity.fromObject(category),
     });
     return product;
   }
