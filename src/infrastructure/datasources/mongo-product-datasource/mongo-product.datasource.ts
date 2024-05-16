@@ -22,10 +22,16 @@ export class MongoProductDatasource implements ProductDatasource {
     pagination: Pagination,
   ): Promise<ProductsResult> {
     const productFilter = {};
-    if (filter.name) productFilter['name'] = { $regex: filter.name, $options: 'i' };
-    if (filter.sku) productFilter['sku'] = { $regex: filter.sku, $options: 'i' };
+    if (filter.name)
+      productFilter['name'] = { $regex: filter.name, $options: 'i' };
+    if (filter.sku)
+      productFilter['sku'] = { $regex: filter.sku, $options: 'i' };
     if (filter.minPrice) productFilter['price'] = { $gte: filter.minPrice };
-    if (filter.maxPrice) productFilter['price'] = { ...productFilter['price'], $lte: filter.maxPrice };    
+    if (filter.maxPrice)
+      productFilter['price'] = {
+        ...productFilter['price'],
+        $lte: filter.maxPrice,
+      };
 
     const query = this.productModel
       .find(productFilter)
@@ -54,8 +60,7 @@ export class MongoProductDatasource implements ProductDatasource {
       await newProduct.populate('category');
       return ProductEntity.fromObject(newProduct);
     } catch (error) {
-      if (error.code === 11000)
-        throw new SkuConflictException(product.sku);
+      if (error.code === 11000) throw new SkuConflictException(product.sku);
       else throw error;
     }
   }
@@ -70,8 +75,7 @@ export class MongoProductDatasource implements ProductDatasource {
         .exec();
       return ProductEntity.fromObject(updatedProduct);
     } catch (error) {
-      if (error.code === 11000)
-        throw new SkuConflictException(product.sku);
+      if (error.code === 11000) throw new SkuConflictException(product.sku);
       else throw error;
     }
   }

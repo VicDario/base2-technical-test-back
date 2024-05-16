@@ -30,9 +30,9 @@ export class ProductEntity {
     this.images = images;
   }
 
-  static fromObject(object: { [key: string]: any }) {
+  static fromObject(object: { [key: string]: any }): ProductEntity {
     const { id, sku, name, price, description, images, category } = object;
-    
+
     const product = new ProductEntity({
       id,
       sku,
@@ -40,7 +40,10 @@ export class ProductEntity {
       price,
       description,
       images,
-      category: typeof category === 'string' ? category : CategoryEntity.fromObject(category),
+      category:
+        typeof category === 'string'
+          ? category
+          : CategoryEntity.fromObject(category),
     });
     return product;
   }

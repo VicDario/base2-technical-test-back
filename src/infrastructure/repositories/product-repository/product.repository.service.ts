@@ -24,12 +24,15 @@ export class ProductRepositoryService implements ProductRepository {
   async getProductById(id: string): Promise<ProductEntity> {
     return await this.productDatasource.getProductById(id);
   }
-  
+
   async createProduct(product: ProductEntity): Promise<ProductEntity> {
     return await this.productDatasource.createProduct(product);
   }
 
-  async updateProduct(id: string, product: ProductEntity): Promise<ProductEntity> {
+  async updateProduct(
+    id: string,
+    product: ProductEntity,
+  ): Promise<ProductEntity> {
     return await this.productDatasource.updateProduct(id, product);
   }
 

@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ProductRepositoryService } from '@/repositories/product-repository/product.repository.service';
-import { CreateProductDto, FilterProductsDto, UpdateProductDto } from '@/dtos/product.dto';
+import {
+  CreateProductDto,
+  FilterProductsDto,
+  UpdateProductDto,
+} from '@/dtos/product.dto';
 import { ProductEntity } from '@/entities/product.entity';
 import { ProductsResult } from '@/domain/repositories/product.repository';
 import { PaginationDto } from '@/dtos/query.dto';

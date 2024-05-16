@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { CategoriesUseCasesService } from '@/use-cases/categories-use-cases/categories.use-cases.service';
 import { ApiOperation } from '@nestjs/swagger';
 import { PaginationDto } from '@/dtos/query.dto';
@@ -16,7 +16,7 @@ export class CategoriesController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get a list of categories' })
+  @ApiOperation({ summary: 'Get a category' })
   async getCategory(@Query('id', MongoIdPipe) id: string) {
     return await this.categoriesService.getCategoryById(id);
   }
