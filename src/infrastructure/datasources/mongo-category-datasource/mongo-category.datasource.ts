@@ -41,6 +41,11 @@ export class MongoCategoryDatasource implements CategoryDatasource {
     return CategoryEntity.fromObject(newCategory);
   }
 
+  async createManyCategories(categories: CategoryEntity[]): Promise<CategoryEntity[]> {
+    const newCategories = await this.categoryModel.insertMany(categories);
+    return newCategories.map(CategoryEntity.fromObject);    
+  }
+
   async updateCategory(
     id: string,
     category: CategoryEntity,

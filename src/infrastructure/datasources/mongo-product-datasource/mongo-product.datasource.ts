@@ -55,6 +55,7 @@ export class MongoProductDatasource implements ProductDatasource {
     if (!product) return null;
     return ProductEntity.fromObject(product);
   }
+
   async createProduct(product: ProductEntity): Promise<ProductEntity> {
     try {
       const newProduct = await this.productModel.create(product);
@@ -64,6 +65,11 @@ export class MongoProductDatasource implements ProductDatasource {
       if (error.code === 11000) throw new SkuConflictException(product.sku);
       else throw error;
     }
+  }
+
+  async createManyProducts(products: ProductEntity[]): Promise<ProductEntity[]> {
+    const newProducts = await this.productModel.insertMany(products);
+    return newProducts.map(ProductEntity.fromObject);
   }
 
   async updateProduct(
