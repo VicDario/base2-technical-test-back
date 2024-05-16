@@ -14,6 +14,9 @@ export class Product {
   sku: string;
 
   @Prop()
+  brand: string;
+
+  @Prop()
   price: number;
 
   @Prop()
