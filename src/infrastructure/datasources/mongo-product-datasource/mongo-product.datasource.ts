@@ -52,6 +52,7 @@ export class MongoProductDatasource implements ProductDatasource {
       .findById(id)
       .populate('category')
       .exec();
+    if (!product) return null;
     return ProductEntity.fromObject(product);
   }
   async createProduct(product: ProductEntity): Promise<ProductEntity> {
@@ -74,6 +75,7 @@ export class MongoProductDatasource implements ProductDatasource {
         .findByIdAndUpdate(id, product, { new: true })
         .populate('category')
         .exec();
+      if (!updatedProduct) return null;
       return ProductEntity.fromObject(updatedProduct);
     } catch (error) {
       if (error.code === 11000) throw new SkuConflictException(product.sku);
@@ -83,6 +85,7 @@ export class MongoProductDatasource implements ProductDatasource {
 
   async deleteProduct(id: string): Promise<ProductEntity> {
     const deletedProduct = await this.productModel.findByIdAndDelete(id).exec();
+    if (!deletedProduct) return null;
     return ProductEntity.fromObject(deletedProduct);
   }
 }
