@@ -32,14 +32,15 @@ export class ProductEntity {
 
   static fromObject(object: { [key: string]: any }) {
     const { id, sku, name, price, description, images, category } = object;
+    const categoryEntity = CategoryEntity.fromObject(category);
     const product = new ProductEntity({
       id,
       sku,
       name,
       price,
       description,
-      category,
       images,
+      category: categoryEntity,
     });
     return product;
   }
