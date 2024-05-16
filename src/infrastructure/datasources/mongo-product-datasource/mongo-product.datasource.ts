@@ -35,7 +35,6 @@ export class MongoProductDatasource implements ProductDatasource {
     const totalProducts = query.clone().estimatedDocumentCount().exec();
     const productsResult = await query.exec();
     const products = productsResult.map(ProductEntity.fromObject);
-    console.log(productsResult, productFilter);
     return {
       products,
       total: await totalProducts,
