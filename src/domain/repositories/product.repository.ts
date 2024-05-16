@@ -24,6 +24,7 @@ export abstract class ProductRepository {
   ): Promise<ProductsResult>;
   abstract getProductById(id: string): Promise<ProductEntity>;
   abstract createProduct(product: ProductEntity): Promise<ProductEntity>;
+  abstract createManyProducts(products: ProductEntity[]): Promise<ProductEntity[]>;
   abstract updateProduct(
     id: string,
     product: ProductEntity,

@@ -8,6 +8,7 @@ export abstract class CategoryDatasource {
   abstract getCategories(pagination: Pagination): Promise<CategoriesResult>;
   abstract getCategoryById(id: string): Promise<CategoryEntity>;
   abstract createCategory(category: CategoryEntity): Promise<CategoryEntity>;
+  abstract createManyCategories(categories: CategoryEntity[]): Promise<CategoryEntity[]>;
   abstract updateCategory(
     id: string,
     category: CategoryEntity,
