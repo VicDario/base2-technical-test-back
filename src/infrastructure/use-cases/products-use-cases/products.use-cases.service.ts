@@ -30,7 +30,7 @@ export class ProductsUseCasesService {
   }
 
   async updateProduct(id: string, payload: UpdateProductDto) {
-    const product = ProductEntity.fromObject(payload);
+    const product = ProductEntity.fromPartial(payload);
     return this.productRepository.updateProduct(id, product);
   }
 
