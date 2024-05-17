@@ -2,6 +2,10 @@
 
 This project is a test for Base2.
 
+## Requirements
+- [Node LTS](https://nodejs.org/en)
+- [Pnmp](https://pnpm.io/installation)
+
 ## Installation
 
 ```bash
@@ -14,6 +18,11 @@ $ pnpm install
 3. Run `docker compose up` to create the necessary services (MongoDb), its mandatory to have the mongo envs filled
 4. Run the app.
 5. If you wish you can seed the databases with data with the `seed` endpoint.
+
+## Build
+```bash
+$ pnmp run build
+```
 
 ## Running the app
 
