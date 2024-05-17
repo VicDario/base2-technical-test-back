@@ -1,6 +1,10 @@
 import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { CategoriesUseCasesService } from '@/use-cases/categories-use-cases/categories.use-cases.service';
-import { ApiOperation } from '@nestjs/swagger';
+import {
+  ApiConflictResponse,
+  ApiNotFoundResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
 import { PaginationDto } from '@/dtos/query.dto';
 import { CreateCategoryDto } from '@/dtos/category.dto';
 import { MongoIdPipe } from '@/infrastructure/pipes/mongo-id/mongo-id.pipe';
@@ -17,18 +21,21 @@ export class CategoriesController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a category' })
+  @ApiNotFoundResponse({ description: 'Category not found' })
   async getCategory(@Query('id', MongoIdPipe) id: string) {
     return await this.categoriesService.getCategoryById(id);
   }
 
   @Post()
   @ApiOperation({ summary: 'Create a new category' })
+  @ApiConflictResponse({ description: 'Category already exists' })
   async createCategory(@Body() payload: CreateCategoryDto) {
     return await this.categoriesService.createCategory(payload);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a category' })
+  @ApiNotFoundResponse({ description: 'Category not found' })
   async deleteCategory(@Query('id', MongoIdPipe) id: string) {
     return await this.categoriesService.deleteCategory(id);
   }

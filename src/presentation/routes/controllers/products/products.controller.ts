@@ -15,7 +15,11 @@ import {
   UpdateProductDto,
 } from '@/dtos/product.dto';
 import { PaginationDto } from '@/dtos/query.dto';
-import { ApiOperation } from '@nestjs/swagger';
+import {
+  ApiConflictResponse,
+  ApiNotFoundResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
 import { MongoIdPipe } from '@/infrastructure/pipes/mongo-id/mongo-id.pipe';
 
 @Controller('products')
@@ -33,18 +37,22 @@ export class ProductsController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Update product' })
+  @ApiNotFoundResponse({ description: 'Product not found' })
   getProduct(@Param('id', MongoIdPipe) id: string) {
     return this.productService.getProductById(id);
   }
 
   @Post()
   @ApiOperation({ summary: 'Create product' })
+  @ApiConflictResponse({ description: 'Sku already exists' })
   createProduct(@Body() payload: CreateProductDto) {
     return this.productService.createProduct(payload);
   }
 
   @Put(':id')
   @ApiOperation({ summary: 'Update product' })
+  @ApiConflictResponse({ description: 'Sku already exists' })
+  @ApiNotFoundResponse({ description: 'Product not found' })
   updateProduct(
     @Param('id', MongoIdPipe) id: string,
     @Body() payload: UpdateProductDto,
@@ -54,6 +62,7 @@ export class ProductsController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Update product' })
+  @ApiNotFoundResponse({ description: 'Product not found' })
   deleteProduct(@Param('id', MongoIdPipe) id: string) {
     return this.productService.deleteProduct(id);
   }
