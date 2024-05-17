@@ -1,4 +1,4 @@
-export const mockProductUseCases = {
+export const mockProductsUseCases = {
   getProducts: jest.fn(),
   getProductById: jest.fn(),
   createProduct: jest.fn(),
