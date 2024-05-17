@@ -39,15 +39,19 @@ describe('ProductsController', () => {
       products: mockedProducts,
       total: mockedProducts.length,
     };
+    const productFilter = {};
     jest.spyOn(service, 'getProducts').mockResolvedValue(mockedResult);
 
-    const result = await controller.getProducts(paginationDto, {});
+    const result = await controller.getProducts(paginationDto, productFilter);
 
     expect(result).toBe(mockedResult);
     result.products.forEach((product) =>
       expect(product).toBeInstanceOf(ProductEntity),
     );
-    expect(service.getProducts).toHaveBeenCalledWith(paginationDto);
+    expect(service.getProducts).toHaveBeenCalledWith(
+      paginationDto,
+      productFilter,
+    );
   });
 
   it('should get a product by id', async () => {
