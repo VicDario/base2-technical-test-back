@@ -6,38 +6,12 @@ import {
   CategoriesResult,
   Pagination,
 } from '@/domain/repositories/category.repository';
+import { mockCategoryDatasource } from '@/infrastructure/mocks/datasources/category.datasource.mock';
+import { categoriesArray } from '@/infrastructure/mocks/data/category.mock';
 
 describe('CategoryRepositoryService', () => {
   let repository: CategoryRepositoryService;
   let datasource: CategoryDatasource;
-
-  const mockCategoryDatasource: CategoryDatasource = {
-    getCategories: jest.fn(),
-    getCategoryById: jest.fn(),
-    createCategory: jest.fn(),
-    createManyCategories: jest.fn(),
-    deleteCategory: jest.fn(),
-    updateCategory: jest.fn(),
-  };
-
-  const categoriesArray = [
-    {
-      id: '1',
-      name: 'Clothes',
-    },
-    {
-      id: '2',
-      name: 'Fruits',
-    },
-    {
-      id: '3',
-      name: 'VideoGames',
-    },
-    {
-      id: '4',
-      name: 'Shoes',
-    },
-  ];
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

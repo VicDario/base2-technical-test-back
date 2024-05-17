@@ -7,52 +7,12 @@ import {
   ProductsResult,
 } from '@/domain/repositories/product.repository';
 import { ProductEntity } from '@/entities/product.entity';
+import { mockProductDatasource } from '@/infrastructure/mocks/datasources/product.datasource.mock';
+import { productsArray } from '@/infrastructure/mocks/data/product.mock';
 
 describe('ProductRepositoryService', () => {
   let repository: ProductRepositoryService;
   let datasource: ProductDatasource;
-
-  const mockProductDatasource: ProductDatasource = {
-    getProducts: jest.fn(),
-    getProductById: jest.fn(),
-    createProduct: jest.fn(),
-    createManyProducts: jest.fn(),
-    updateProduct: jest.fn(),
-    deleteProduct: jest.fn(),
-  };
-
-  const productsArray: ProductEntity[] = [
-    {
-      id: '1',
-      sku: '00001',
-      name: 'T-shirt',
-      brand: 'Lacoste',
-      price: 300,
-      category: '1',
-      stock: 4,
-      description: 'A nice t-shirt',
-    },
-    {
-      id: '2',
-      sku: '00002',
-      name: 'Orange',
-      brand: 'generic-brand',
-      price: 300,
-      category: '2',
-      stock: 5,
-      description: 'A delicious orange',
-    },
-    {
-      id: '3',
-      sku: '00003',
-      name: 'PS5',
-      brand: 'Sony',
-      price: 300,
-      category: '3',
-      stock: 6,
-      description: 'An amazing PS5',
-    },
-  ];
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

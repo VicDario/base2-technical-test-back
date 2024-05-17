@@ -8,29 +8,11 @@ import {
 } from '@/domain/repositories/category.repository';
 import { CategoryEntity } from '@/entities/category.entity';
 import { getModelToken } from '@nestjs/mongoose';
+import { categoriesArray } from '@/infrastructure/mocks/data/category.mock';
 
 describe('MongoCategoryDatasource', () => {
   let datasource: MongoCategoryDatasource;
   let categoryModel: Model<Category>;
-
-  const categoriesArray = [
-    {
-      id: '1',
-      name: 'Clothes',
-    },
-    {
-      id: '2',
-      name: 'Fruits',
-    },
-    {
-      id: '3',
-      name: 'VideoGames',
-    },
-    {
-      id: '4',
-      name: 'Shoes',
-    },
-  ];
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
