@@ -82,7 +82,7 @@ describe('MongoCategoryDatasource', () => {
 
   describe('getCategoryById', () => {
     it('should return a category if found', async () => {
-      const category = categoriesArray;
+      const category = categoriesArray[0];
 
       jest.spyOn(categoryModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(category),
