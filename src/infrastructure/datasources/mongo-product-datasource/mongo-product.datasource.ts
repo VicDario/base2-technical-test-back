@@ -67,7 +67,9 @@ export class MongoProductDatasource implements ProductDatasource {
     }
   }
 
-  async createManyProducts(products: ProductEntity[]): Promise<ProductEntity[]> {
+  async createManyProducts(
+    products: ProductEntity[],
+  ): Promise<ProductEntity[]> {
     const newProducts = await this.productModel.insertMany(products);
     return newProducts.map(ProductEntity.fromObject);
   }
