@@ -41,26 +41,28 @@ export class MongoCategoryDatasource implements CategoryDatasource {
     return CategoryEntity.fromObject(newCategory);
   }
 
-  async createManyCategories(categories: CategoryEntity[]): Promise<CategoryEntity[]> {
+  async createManyCategories(
+    categories: CategoryEntity[],
+  ): Promise<CategoryEntity[]> {
     const newCategories = await this.categoryModel.insertMany(categories);
-    return newCategories.map(CategoryEntity.fromObject);    
+    return newCategories.map(CategoryEntity.fromObject);
   }
 
   async updateCategory(
     id: string,
     category: CategoryEntity,
   ): Promise<CategoryEntity> {
-    const updatedCategory = await this.categoryModel.findByIdAndUpdate(
-      id,
-      category,
-      { new: true },
-    );
+    const updatedCategory = await this.categoryModel
+      .findByIdAndUpdate(id, category, { new: true })
+      .exec();
     if (!updatedCategory) return null;
     return CategoryEntity.fromObject(updatedCategory);
   }
 
   async deleteCategory(id: string): Promise<CategoryEntity> {
-    const deletedCategory = await this.categoryModel.findByIdAndDelete(id);
+    const deletedCategory = await this.categoryModel
+      .findByIdAndDelete(id)
+      .exec();
     if (!deletedCategory) return null;
     return CategoryEntity.fromObject(deletedCategory);
   }
