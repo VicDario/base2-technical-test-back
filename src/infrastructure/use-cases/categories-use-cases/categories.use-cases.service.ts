@@ -15,7 +15,7 @@ export class CategoriesUseCasesService {
   async getCategoryById(id: string) {
     const category = await this.categoryRepository.getCategoryById(id);
     if (!category) throw new NotFoundException();
-    return category
+    return category;
   }
 
   async createCategory(category: CreateCategoryDto) {
