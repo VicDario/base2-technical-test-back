@@ -28,8 +28,10 @@ export class ProductRepositoryService implements ProductRepository {
   async createProduct(product: ProductEntity): Promise<ProductEntity> {
     return await this.productDatasource.createProduct(product);
   }
-  
-  async createManyProducts(products: ProductEntity[]): Promise<ProductEntity[]> {
+
+  async createManyProducts(
+    products: ProductEntity[],
+  ): Promise<ProductEntity[]> {
     return await this.productDatasource.createManyProducts(products);
   }
 
