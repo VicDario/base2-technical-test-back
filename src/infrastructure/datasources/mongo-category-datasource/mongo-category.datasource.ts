@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CategoryDatasource } from '@/domain/datasources/category.datasource';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -37,8 +37,14 @@ export class MongoCategoryDatasource implements CategoryDatasource {
   }
 
   async createCategory(category: CategoryEntity): Promise<CategoryEntity> {
-    const newCategory = await this.categoryModel.create(category);
-    return CategoryEntity.fromObject(newCategory);
+    try {
+      const newCategory = await this.categoryModel.create(category);
+      return CategoryEntity.fromObject(newCategory);
+    } catch (error) {
+      if (error.code === 11000)
+        throw new ConflictException('Category already exists');
+      else throw error;
+    }
   }
 
   async createManyCategories(
