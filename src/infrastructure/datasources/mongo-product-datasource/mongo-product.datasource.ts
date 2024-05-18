@@ -5,11 +5,14 @@ import {
   ProductsResult,
 } from '@/domain/repositories/product.repository';
 import { ProductEntity } from '@/domain/entities/product.entity';
+import { CategoryEntity } from '@/domain/entities/category.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ProductDatasource } from '@/domain/datasources/product.datasource';
 import { SkuConflictException } from '@/infrastructure/exceptions/skuConflict.exception';
+
+const invalidCategory = new CategoryEntity({ id: '', name: 'no-valid' });
 
 @Injectable()
 export class MongoProductDatasource implements ProductDatasource {
@@ -40,7 +43,14 @@ export class MongoProductDatasource implements ProductDatasource {
       .populate('category');
     const totalProducts = query.clone().estimatedDocumentCount().exec();
     const productsResult = await query.exec();
-    const products = productsResult.map(ProductEntity.fromObject);
+    const products = productsResult.map((product) => {
+      if (!product.category)
+        return ProductEntity.fromObject({
+          ...product,
+          category: invalidCategory,
+        });
+      return ProductEntity.fromObject(product);
+    });
     return {
       products,
       total: await totalProducts,
@@ -53,6 +63,13 @@ export class MongoProductDatasource implements ProductDatasource {
       .populate('category')
       .exec();
     if (!product) return null;
+
+    if (!product.category)
+      return ProductEntity.fromObject({
+        ...product,
+        category: invalidCategory,
+      });
+
     return ProductEntity.fromObject(product);
   }
 
@@ -92,8 +109,16 @@ export class MongoProductDatasource implements ProductDatasource {
   }
 
   async deleteProduct(id: string): Promise<ProductEntity> {
-    const deletedProduct = await this.productModel.findByIdAndDelete(id).exec();
+    const deletedProduct = await this.productModel
+      .findByIdAndDelete(id)
+      .populate('category')
+      .exec();
     if (!deletedProduct) return null;
+    if (!deletedProduct.category)
+      return ProductEntity.fromObject({
+        ...deletedProduct,
+        category: invalidCategory,
+      });
     return ProductEntity.fromObject(deletedProduct);
   }
 }
