@@ -46,7 +46,8 @@ export class MongoProductDatasource implements ProductDatasource {
     const products = productsResult.map((product) => {
       if (!product.category)
         return ProductEntity.fromObject({
-          ...product,
+          ...product.toObject(),
+          id: product.id,
           category: invalidCategory,
         });
       return ProductEntity.fromObject(product);
@@ -67,6 +68,7 @@ export class MongoProductDatasource implements ProductDatasource {
     if (!product.category)
       return ProductEntity.fromObject({
         ...product,
+        id: product.id,
         category: invalidCategory,
       });
 
