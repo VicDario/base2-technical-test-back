@@ -118,7 +118,8 @@ export class MongoProductDatasource implements ProductDatasource {
     if (!deletedProduct) return null;
     if (!deletedProduct.category)
       return ProductEntity.fromObject({
-        ...deletedProduct,
+        ...deletedProduct.toObject(),
+        id: deletedProduct.id,
         category: invalidCategory,
       });
     return ProductEntity.fromObject(deletedProduct);
