@@ -1,0 +1,905 @@
+{
+	"info": {
+		"_postman_id": "559033fc-7b26-4c8d-9163-057c93fd73b9",
+		"name": "Integration testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17163718"
+	},
+	"item": [
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Create category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let schema = {",
+									"    \"id\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"name\": {",
+									"        \"type\": \"string\"",
+									"    }",
+									"};",
+									"",
+									"pm.test('Schema is valid', () => {",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+									"});",
+									"",
+									"pm.test('Response body is a valid category', () => {",
+									"    pm.expect(pm.response.json()?.name).to.be.equal(\"dummy-category\")",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"dummy-category\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/categories",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let schema = {",
+									"    \"categories\": {",
+									"        \"type\": \"array\",",
+									"        \"items\": {",
+									"            \"type\": \"object\",",
+									"            \"properties\": {",
+									"                \"id\": {",
+									"                    \"type\": \"string\"",
+									"                },",
+									"                \"name\": {",
+									"                    \"type\": \"string\"",
+									"                }",
+									"            }",
+									"        }",
+									"    },",
+									"    \"total\": {",
+									"        \"type\": \"integer\"",
+									"    }",
+									"};",
+									"",
+									"pm.test('Schema is valid', () => {",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+									"});",
+									"",
+									"pm.test('Response body has one valid category', () => {",
+									"    pm.expect(pm.response.json()?.categories).to.have.lengthOf(1)",
+									"    pm.expect(pm.response.json()?.categories[0].name).to.equal(\"dummy-category\")",
+									"})",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categories?offset=0&limit=5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categories"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get category",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest(pm.variables.get(\"baseUrl\") + \"/categories?offset=0&limit=5\", function (err, response) {",
+									"    let response_json = response.json();",
+									"    let category_id = response_json.categories[0].id;",
+									"    pm.variables.set(\"categoryId\", category_id);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let schema = {",
+									"    \"id\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"name\": {",
+									"        \"type\": \"string\"",
+									"    }",
+									"};",
+									"",
+									"pm.test('Schema is valid', () => {",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+									"});",
+									"",
+									"pm.test('Response body is a valid category', () => {",
+									"    pm.expect(pm.response.json()?.id).to.equal(pm.variables.get(\"categoryId\"))",
+									"    pm.expect(pm.response.json()?.name).to.equal(\"dummy-category\")",
+									"})",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categories/{{categoryId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categories",
+								"{{categoryId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let schema = {",
+									"    \"id\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"name\": {",
+									"        \"type\": \"string\"",
+									"    }",
+									"};",
+									"",
+									"pm.test('Schema is valid', () => {",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+									"});",
+									"",
+									"pm.test('Response body is a valid deleted category', () => {",
+									"    pm.expect(pm.response.json()?.id).to.equal(pm.variables.get(\"categoryId\"))",
+									"    pm.expect(pm.response.json()?.name).to.equal(\"dummy-category\")",
+									"})",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest(pm.variables.get(\"baseUrl\") + \"/categories?offset=0&limit=5\", function (err, response) {",
+									"    let response_json = response.json();",
+									"    let category_id = response_json.categories[0].id;",
+									"    pm.variables.set(\"categoryId\", category_id);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categories/{{categoryId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categories",
+								"{{categoryId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Create product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let schema = {",
+									"    \"id\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"sku\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"name\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"brand\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"price\": {",
+									"        \"type\": \"number\"",
+									"    },",
+									"    \"stock\": {",
+									"        \"type\": \"integer\"",
+									"    },",
+									"    \"description\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"category\": {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"id\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"name\": {",
+									"                \"type\": \"string\"",
+									"            }",
+									"        }",
+									"    },",
+									"    \"images\": {",
+									"        \"type\": \"array\",",
+									"        \"items\": {",
+									"            \"type\": \"string\"",
+									"        }",
+									"    }",
+									"};",
+									"",
+									"pm.test('Schema is valid', () => {",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+									"});",
+									"",
+									"pm.test('Response body is a valid product', () => {",
+									"    pm.expect(pm.response.json()?.sku).to.equal(\"dummy-sku\")",
+									"    pm.expect(pm.response.json()?.name).to.equal(\"dummy-name\")",
+									"    pm.expect(pm.response.json()?.brand).to.equal(\"dummy-brand\")",
+									"    pm.expect(pm.response.json()?.price).to.equal(111.11)",
+									"    pm.expect(pm.response.json()?.stock).to.equal(5)",
+									"    pm.expect(pm.response.json()?.description).to.equal(\"dummy description\")",
+									"    pm.expect(pm.response.json()?.category).to.have.property(\"id\")",
+									"    pm.expect(pm.response.json()?.category.name).to.equal(\"dummy-category\")",
+									"    pm.expect(pm.response.json()?.images).to.deep.equal([\"dummy-image\"])",
+									"})",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const createCategoryRequest = {",
+									"    \"url\": pm.variables.get(\"baseUrl\") + \"/categories\",",
+									"    \"method\": \"POST\",",
+									"    \"header\": { 'content-type': 'application/json' },",
+									"    \"body\": {",
+									"        \"mode\": \"raw\",",
+									"        \"raw\": JSON.stringify({\"name\": \"dummy-category\"})",
+									"    }",
+									"}",
+									"",
+									"pm.sendRequest(createCategoryRequest, function (err, response) {",
+									"    let response_json = response.json();",
+									"    let category_id = response_json.id;",
+									"    pm.variables.set(\"categoryId\", category_id);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sku\": \"dummy-sku\",\n  \"name\": \"dummy-name\",\n  \"brand\": \"dummy-brand\",\n  \"price\": 111.11,\n  \"stock\": 5,\n  \"description\": \"dummy description\",\n  \"category\": \"{{categoryId}}\",\n  \"images\": [\n    \"dummy-image\"\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let schema = {",
+									"    \"products\": {",
+									"        \"type\": \"array\",",
+									"        \"items\": {",
+									"            \"type\": \"object\",",
+									"            \"properties\": {",
+									"                \"id\": {",
+									"                    \"type\": \"string\"",
+									"                },",
+									"                \"sku\": {",
+									"                    \"type\": \"string\"",
+									"                },",
+									"                \"name\": {",
+									"                    \"type\": \"string\"",
+									"                },",
+									"                \"brand\": {",
+									"                    \"type\": \"string\"",
+									"                },",
+									"                \"price\": {",
+									"                    \"type\": \"number\"",
+									"                },",
+									"                \"stock\": {",
+									"                    \"type\": \"integer\"",
+									"                },",
+									"                \"description\": {",
+									"                    \"type\": \"string\"",
+									"                },",
+									"                \"category\": {",
+									"                    \"type\": \"object\",",
+									"                    \"properties\": {",
+									"                        \"id\": {",
+									"                            \"type\": \"string\"",
+									"                        },",
+									"                        \"name\": {",
+									"                            \"type\": \"string\"",
+									"                        }",
+									"                    }",
+									"                },",
+									"                \"images\": {",
+									"                    \"type\": \"array\",",
+									"                    \"items\": {",
+									"                        \"type\": \"string\"",
+									"                    }",
+									"                }",
+									"            }",
+									"        }",
+									"    },",
+									"    \"total\": {",
+									"        \"type\": \"integer\"",
+									"    }",
+									"};",
+									"",
+									"pm.test('Schema is valid', () => {",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+									"});",
+									"",
+									"pm.test('Response body has one valid product', () => {",
+									"    pm.expect(pm.response.json()?.products).to.have.lengthOf(1);",
+									"    pm.expect(pm.response.json()?.products[0].sku).to.equal(\"dummy-sku\");",
+									"    pm.expect(pm.response.json()?.products[0].name).to.equal(\"dummy-name\");",
+									"    pm.expect(pm.response.json()?.products[0].brand).to.equal(\"dummy-brand\");",
+									"    pm.expect(pm.response.json()?.products[0].price).to.equal(111.11);",
+									"    pm.expect(pm.response.json()?.products[0].stock).to.equal(5);",
+									"    pm.expect(pm.response.json()?.products[0].description).to.equal(\"dummy description\");",
+									"    pm.expect(pm.response.json()?.products[0].category).to.have.property(\"id\")",
+									"    pm.expect(pm.response.json()?.products[0].category.name).to.equal(\"dummy-category\")",
+									"    pm.expect(pm.response.json()?.products[0].images).to.deep.equal([\"dummy-image\"]);",
+									"})",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products?offset=0&limit=5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get product",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest(pm.variables.get(\"baseUrl\") + \"/products?offset=0&limit=5\", function (err, response) {",
+									"    let response_json = response.json();",
+									"    let product_id = response_json.products[0].id;",
+									"    pm.variables.set(\"productId\", product_id);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let schema = {",
+									"    \"id\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"sku\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"name\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"brand\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"price\": {",
+									"        \"type\": \"number\"",
+									"    },",
+									"    \"stock\": {",
+									"        \"type\": \"integer\"",
+									"    },",
+									"    \"description\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"category\": {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"id\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"name\": {",
+									"                \"type\": \"string\"",
+									"            }",
+									"        }",
+									"    },",
+									"    \"images\": {",
+									"        \"type\": \"array\",",
+									"        \"items\": {",
+									"            \"type\": \"string\"",
+									"        }",
+									"    }",
+									"};",
+									"",
+									"pm.test('Schema is valid', () => {",
+									"    pm.expect(tv4.validate( pm.response.json(), schema)).to.be.true;",
+									"});",
+									"",
+									"pm.test('Response body is a valid product', () => {",
+									"    pm.expect(pm.response.json()?.sku).to.equal(\"dummy-sku\")",
+									"    pm.expect(pm.response.json()?.name).to.equal(\"dummy-name\")",
+									"    pm.expect(pm.response.json()?.brand).to.equal(\"dummy-brand\")",
+									"    pm.expect(pm.response.json()?.price).to.equal(111.11)",
+									"    pm.expect(pm.response.json()?.stock).to.equal(5)",
+									"    pm.expect(pm.response.json()?.description).to.equal(\"dummy description\")",
+									"    pm.expect(pm.response.json()?.category).to.have.property(\"id\")",
+									"    pm.expect(pm.response.json()?.category.name).to.equal(\"dummy-category\")",
+									"    pm.expect(pm.response.json()?.images).to.deep.equal([\"dummy-image\"])",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/{{productId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"{{productId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update product",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest(pm.variables.get(\"baseUrl\") + \"/products?offset=0&limit=5\", function (err, response) {",
+									"    let response_json = response.json();",
+									"    let product_id = response_json.products[0].id;",
+									"    pm.variables.set(\"productId\", product_id);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let schema = {",
+									"    \"id\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"sku\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"name\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"brand\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"price\": {",
+									"        \"type\": \"number\"",
+									"    },",
+									"    \"stock\": {",
+									"        \"type\": \"integer\"",
+									"    },",
+									"    \"description\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"category\": {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"id\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"name\": {",
+									"                \"type\": \"string\"",
+									"            }",
+									"        }",
+									"    },",
+									"    \"images\": {",
+									"        \"type\": \"array\",",
+									"        \"items\": {",
+									"            \"type\": \"string\"",
+									"        }",
+									"    }",
+									"};",
+									"",
+									"pm.test('Schema is valid', () => {",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+									"});",
+									"",
+									"pm.test('Response body is a valid updated product', () => {",
+									"    pm.expect(pm.response.json()?.sku).to.equal(\"dummy-sku\")",
+									"    pm.expect(pm.response.json()?.name).to.equal(\"dummy-name-updated\")",
+									"    pm.expect(pm.response.json()?.brand).to.equal(\"dummy-brand\")",
+									"    pm.expect(pm.response.json()?.price).to.equal(111.11)",
+									"    pm.expect(pm.response.json()?.stock).to.equal(5)",
+									"    pm.expect(pm.response.json()?.description).to.equal(\"dummy description\")",
+									"    pm.expect(pm.response.json()?.category).to.have.property(\"id\")",
+									"    pm.expect(pm.response.json()?.category.name).to.equal(\"dummy-category\")",
+									"    pm.expect(pm.response.json()?.images).to.deep.equal([\"dummy-image\"])",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"dummy-name-updated\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products/{{productId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"{{productId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete product",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest(pm.variables.get(\"baseUrl\") + \"/products?offset=0&limit=5\", function (err, response) {",
+									"    let response_json = response.json();",
+									"    let product_id = response_json.products[0].id;",
+									"    pm.variables.set(\"productId\", product_id);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let schema = {",
+									"    \"id\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"sku\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"name\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"brand\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"price\": {",
+									"        \"type\": \"number\"",
+									"    },",
+									"    \"stock\": {",
+									"        \"type\": \"integer\"",
+									"    },",
+									"    \"description\": {",
+									"        \"type\": \"string\"",
+									"    },",
+									"    \"category\": {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"id\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"name\": {",
+									"                \"type\": \"string\"",
+									"            }",
+									"        }",
+									"    },",
+									"    \"images\": {",
+									"        \"type\": \"array\",",
+									"        \"items\": {",
+									"            \"type\": \"string\"",
+									"        }",
+									"    }",
+									"};",
+									"",
+									"pm.test('Schema is valid', () => {",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+									"});",
+									"",
+									"pm.test('Response body is a valid deleted product', () => {",
+									"    pm.expect(pm.response.json()?.sku).to.equal(\"dummy-sku\")",
+									"    pm.expect(pm.response.json()?.name).to.equal(\"dummy-name-updated\")",
+									"    pm.expect(pm.response.json()?.brand).to.equal(\"dummy-brand\")",
+									"    pm.expect(pm.response.json()?.price).to.equal(111.11)",
+									"    pm.expect(pm.response.json()?.stock).to.equal(5)",
+									"    pm.expect(pm.response.json()?.description).to.equal(\"dummy description\")",
+									"    pm.expect(pm.response.json()?.category).to.have.property(\"id\")",
+									"    pm.expect(pm.response.json()?.category.name).to.equal(\"dummy-category\")",
+									"    pm.expect(pm.response.json()?.images).to.deep.equal([\"dummy-image\"])",
+									"})",
+									"",
+									"// Remove category",
+									"",
+									"",
+									"pm.sendRequest(pm.variables.get(\"baseUrl\") + \"/categories?offset=0&limit=5\", function (err, response) {",
+									"    let response_json = response.json();",
+									"    let category_id = response_json.categories[0].id;",
+									"",
+									"    const deleteCategoryRequest = {",
+									"        \"url\": pm.variables.get(\"baseUrl\") + \"/categories\" + \"/\" + category_id,",
+									"        \"header\": { 'content-type': 'application/json' },",
+									"        \"method\": \"DELETE\",",
+									"    }",
+									"",
+									"    pm.sendRequest(deleteCategoryRequest, function (err, response) {",
+									"        console.log(\"Category deleted\")",
+									"    });",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/{{productId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"{{productId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000/api"
+		},
+		{
+			"key": "categoryId",
+			"value": ""
+		}
+	]
+}
