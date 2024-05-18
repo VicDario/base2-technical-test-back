@@ -11,21 +11,33 @@ import { ProductEntity } from '@/entities/product.entity';
 import { productsArray } from '@/infrastructure/mocks/data/product.mock';
 import { NotFoundException } from '@nestjs/common';
 import { CreateProductDto, UpdateProductDto } from '@/dtos/product.dto';
+import { CategoryRepository } from '@/domain/repositories/category.repository';
+import { CategoryRepositoryService } from '@/repositories/category-repository/category.repository.service';
+import { mockCategoryRepository } from '@/infrastructure/mocks/repositories/category.repository.mock';
+import { CategoryEntity } from '@/entities/category.entity';
 
 describe('ProductsUseCasesService', () => {
   let service: ProductsUseCasesService;
   let productRepository: ProductRepository;
+  let categoryRepository: CategoryRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ProductsUseCasesService,
         { provide: ProductRepositoryService, useValue: mockProductRepository },
+        {
+          provide: CategoryRepositoryService,
+          useValue: mockCategoryRepository,
+        },
       ],
     }).compile();
 
     service = module.get<ProductsUseCasesService>(ProductsUseCasesService);
     productRepository = module.get<ProductRepository>(ProductRepositoryService);
+    categoryRepository = module.get<CategoryRepository>(
+      CategoryRepositoryService,
+    );
   });
 
   it('should be defined', () => {
@@ -91,11 +103,39 @@ describe('ProductsUseCasesService', () => {
       jest
         .spyOn(productRepository, 'createProduct')
         .mockResolvedValue(productEntity);
+      jest
+        .spyOn(categoryRepository, 'getCategoryById')
+        .mockResolvedValue(
+          CategoryEntity.fromObject({
+            id: productEntity.category,
+            name: 'category',
+          }),
+        );
 
       const result = await service.createProduct(productPayload);
 
       expect(result).toBeDefined();
       expect(result).toBeInstanceOf(ProductEntity);
+    });
+    it('should throw an error if the category does not exist', async () => {
+      const productEntity = ProductEntity.fromObject(productsArray[0]);
+      const productPayload: CreateProductDto = {
+        ...productEntity,
+        category: productEntity.category as string,
+      };
+      jest
+        .spyOn(productRepository, 'createProduct')
+        .mockResolvedValue(productEntity);
+      jest
+        .spyOn(categoryRepository, 'getCategoryById')
+        .mockResolvedValue(null);
+
+      expect(
+        service.createProduct(productPayload),
+      ).rejects.toThrow();
+      expect(
+        service.createProduct(productPayload),
+      ).rejects.toBeInstanceOf(NotFoundException);
     });
   });
 
@@ -123,6 +163,23 @@ describe('ProductsUseCasesService', () => {
         category: productEntity.category as string,
       };
       jest.spyOn(productRepository, 'updateProduct').mockResolvedValue(null);
+
+      expect(
+        service.updateProduct(productId, productPayload),
+      ).rejects.toThrow();
+      expect(
+        service.updateProduct(productId, productPayload),
+      ).rejects.toBeInstanceOf(NotFoundException);
+    });
+    it('should throw an error if the category does not exist', async () => {
+      const productId = '1';
+      const productEntity = ProductEntity.fromObject(productsArray[0]);
+      const productPayload: UpdateProductDto = {
+        ...productEntity,
+        category: productEntity.category as string,
+      };
+      jest.spyOn(productRepository, 'updateProduct').mockResolvedValue(productEntity);
+      jest.spyOn(categoryRepository, 'getCategoryById').mockResolvedValue(null);
 
       expect(
         service.updateProduct(productId, productPayload),
