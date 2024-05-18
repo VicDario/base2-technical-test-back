@@ -132,11 +132,14 @@ describe('MongoProductDatasource', () => {
     });
 
     it('should return null if product not found', async () => {
-      jest.spyOn(productModel, 'findByIdAndDelete').mockReturnValue({
+      const product = ProductEntity.fromObject(productsArray[0]);
+      product.name = 'New Name';
+      jest.spyOn(productModel, 'findByIdAndUpdate').mockReturnValue({
+        populate: jest.fn().mockReturnThis(),
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
-      const result = await datasource.deleteProduct('1');
+      const result = await datasource.updateProduct('1', product);
 
       expect(result).toBeNull();
     });
@@ -146,6 +149,7 @@ describe('MongoProductDatasource', () => {
     it('should delete and return the product', async () => {
       const product = ProductEntity.fromObject(productsArray[0]);
       jest.spyOn(productModel, 'findByIdAndDelete').mockReturnValue({
+        populate: jest.fn().mockReturnThis(),
         exec: jest.fn().mockResolvedValue(product),
       } as any);
 
@@ -156,6 +160,7 @@ describe('MongoProductDatasource', () => {
 
     it('should return null if product not found', async () => {
       jest.spyOn(productModel, 'findByIdAndDelete').mockReturnValue({
+        populate: jest.fn().mockReturnThis(),
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
