@@ -24,7 +24,17 @@ export class ProductEntity {
   public images?: string[];
 
   constructor(options: ProductEntityOptions) {
-    const { id, sku, name, brand, price, stock, description, images, category } = options;
+    const {
+      id,
+      sku,
+      name,
+      brand,
+      price,
+      stock,
+      description,
+      images,
+      category,
+    } = options;
     this.id = id;
     this.sku = sku;
     this.name = name;
@@ -37,7 +47,17 @@ export class ProductEntity {
   }
 
   static fromObject(object: { [key: string]: any }): ProductEntity {
-    const { id, sku, name, brand, price, stock, description, images, category } = object;
+    const {
+      id,
+      sku,
+      name,
+      brand,
+      price,
+      stock,
+      description,
+      images,
+      category,
+    } = object;
 
     const product = new ProductEntity({
       id,
