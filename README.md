@@ -9,6 +9,7 @@ This project is a test for Base2.
 ## Installation
 
 ```bash
+$ npm install -g pnpm
 $ pnpm install
 ```
 
@@ -47,3 +48,9 @@ $ pnpm run test
 # test coverage
 $ pnpm run test:cov
 ```
+
+## Test Postman
+
+You can find a postman collection with funtional tests.
+This tests work when you db is empty
+```Integration testing.postman_collection.json```
