@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CategoriesUseCasesService } from '@/use-cases/categories-use-cases/categories.use-cases.service';
 import {
   ApiConflictResponse,
@@ -22,7 +30,7 @@ export class CategoriesController {
   @Get(':id')
   @ApiOperation({ summary: 'Get a category' })
   @ApiNotFoundResponse({ description: 'Category not found' })
-  async getCategory(@Query('id', MongoIdPipe) id: string) {
+  async getCategory(@Param('id', MongoIdPipe) id: string) {
     return await this.categoriesService.getCategoryById(id);
   }
 
@@ -36,7 +44,7 @@ export class CategoriesController {
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a category' })
   @ApiNotFoundResponse({ description: 'Category not found' })
-  async deleteCategory(@Query('id', MongoIdPipe) id: string) {
+  async deleteCategory(@Param('id', MongoIdPipe) id: string) {
     return await this.categoriesService.deleteCategory(id);
   }
 }
