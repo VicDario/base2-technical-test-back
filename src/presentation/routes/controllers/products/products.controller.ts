@@ -36,7 +36,7 @@ export class ProductsController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Update product' })
+  @ApiOperation({ summary: 'Get product' })
   @ApiNotFoundResponse({ description: 'Product not found' })
   getProduct(@Param('id', MongoIdPipe) id: string) {
     return this.productService.getProductById(id);
@@ -61,7 +61,7 @@ export class ProductsController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Update product' })
+  @ApiOperation({ summary: 'Delete product' })
   @ApiNotFoundResponse({ description: 'Product not found' })
   deleteProduct(@Param('id', MongoIdPipe) id: string) {
     return this.productService.deleteProduct(id);
